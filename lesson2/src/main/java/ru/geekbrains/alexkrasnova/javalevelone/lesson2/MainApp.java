@@ -5,7 +5,6 @@ import java.util.Arrays;
 public class MainApp {
     public static void main(String[] args) {
 
-
         int[] array1 = {1, 3, 4, 3, 5};
         int[] array2 = {1, 1, 1, 3};
         int[] array3 = {3, 3, 4, 1};
@@ -21,6 +20,8 @@ public class MainApp {
         System.out.println("shift(" + Arrays.toString(array5) + ", -3) = " + Arrays.toString(shift(array5, -3)));
     }
 
+    // Проверяет, есть ли в массиве есть , в котором сумма левой и правой части массива равны. Если есть, возвращает true, иначе false.
+    // На вход получает целочисленный массив.
     public static boolean hasBalancePoint(int[] array) {
 
         int sumLeft = 0;
@@ -29,7 +30,6 @@ public class MainApp {
         for (int l = 0; l < array.length; l++) {
             sumRight += array[l];
         }
-
 
         for (int i = 0; i < array.length; i++) {
                 sumLeft += array[i];
@@ -42,6 +42,8 @@ public class MainApp {
         return false;
     }
 
+    // На вход получает целочисленный массив и целое число n.
+    // Сдвигает элементы массива на n позиций вправо, если n положительно, и на n позиций влево, если n отрицательно.
     public static int[] shift(int[] array, int n) {
 
         if (n>=0) {
