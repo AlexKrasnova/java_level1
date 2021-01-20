@@ -9,7 +9,7 @@ public class MainApp {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        playWordsGame();
+        playWordsGame("Фрукты и овощи", getWords());
         playNumberGame();
 
     }
@@ -19,18 +19,19 @@ public class MainApp {
         int play;
         System.out.print("Привет, давай сыграем в игру Угадай число? \nДля продолжения нажми 1, а для выхода 0:\n");
         play = scanner.nextInt();
+        int maxTryCount = 3;
         while (play == 1) {
             System.out.println("Поехали! Я загадаю тебе число от 0 до 9, а ты попробуешь его угадать.");
             int rightAnswer = random.nextInt(10);
 
             int userAnswer;
-            for (int i = 1; i < 4; i++) {
-                System.out.printf("У тебя есть %d попытки.\nВведи целое число от 0 до 9:\n", (4 - i));
+            for (int i = 1; i <= maxTryCount; i++) {
+                System.out.printf("У тебя есть %d попытки.\nВведи целое число от 0 до 9:\n", maxTryCount);
                 userAnswer = scanner.nextInt();
                 if (userAnswer == rightAnswer) {
                     System.out.println("Поздравляю, ты угадал!");
                     break;
-                } else if (i > 2) {
+                } else if (i >= maxTryCount) {
                     System.out.println("Ты проиграл.");
                 } else if (userAnswer < rightAnswer) {
                     System.out.println("Ты ввел слишком маленькое число.");
@@ -43,15 +44,15 @@ public class MainApp {
         }
     }
 
-    public static void playWordsGame() {
-        String[] words = getWords();
-        System.out.print("Привет, давай сыграем в слова на английском.\nЯ загадаю тебе фрукт или овощ на английском, а ты попробуешь его угадать.\n");
+    public static void playWordsGame(String theme, String... words) {
+        System.out.print("Привет, давай сыграем в слова на английском.\nЯ загадаю слово по теме " + theme + " на английском, а ты попробуешь его угадать.\n");
         String rightAnswer = words[random.nextInt(words.length)];
+        int outputStringLength = 15;
         do {
             System.out.println("Введи свой вариант:");
             String userAnswer = scanner.nextLine();
 
-            if (userAnswer.equals(rightAnswer)){
+            if (userAnswer.equals(rightAnswer)) {
                 System.out.println("Поздравляю ты угадал!");
                 break;
             } else {
@@ -63,8 +64,7 @@ public class MainApp {
                         System.out.print("#");
                     }
                 }
-                for(int i = minAnswerLength; i<15; i++)
-                {
+                for (int i = minAnswerLength; i < outputStringLength; i++) {
                     System.out.print("#");
                 }
                 System.out.print("\n");
