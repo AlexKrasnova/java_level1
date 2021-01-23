@@ -109,6 +109,54 @@ public class MainApp {
         return true;
     }
 
+/*    public static boolean isGameWon(char symbol) {
+        int numberOfSymbolsInLine = 0;
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[0].length; x++) {
+                if (map[y][x] == symbol) {
+                    numberOfSymbolsInLine += 1;
+                }
+            }
+            if (numberOfSymbolsInLine == map.length) {
+                return true;
+            }
+        }
+
+        numberOfSymbolsInLine = 0;
+        for (int x = 0; x < map[0].length; x++) {
+            for (int y = 0; y < map.length; y++) {
+                if (map[y][x] == symbol) {
+                    numberOfSymbolsInLine += 1;
+                }
+            }
+            if (numberOfSymbolsInLine == map.length) {
+                return true;
+            }
+        }
+
+        numberOfSymbolsInLine = 0;
+        for (int i = 0; i < map.length; i++) {
+            if (map[i][i] == symbol) {
+                numberOfSymbolsInLine += 1;
+            }
+        }
+        if (numberOfSymbolsInLine == map.length) {
+            return true;
+        }
+
+
+        numberOfSymbolsInLine = 0;
+        for (int i = 0; i<map.length; i++){
+            if (map[i][map.length-1 -i] == symbol) {
+                numberOfSymbolsInLine += 1;
+            }
+        }
+        if (numberOfSymbolsInLine == map.length) {
+            return true;
+        }
+        return false;
+    }*/
+
     public static boolean isGameWon(char symbol) {
         boolean victory = true;
         for (int y = 0; y < map.length; y++) {
@@ -118,9 +166,9 @@ public class MainApp {
             if (victory) {
                 return true;
             }
+            victory = true;
         }
 
-        victory = true;
         for (int x = 0; x < map[0].length; x++) {
             for (int y = 0; y < map.length; y++) {
                 victory = victory && (map[y][x] == symbol);
@@ -128,6 +176,7 @@ public class MainApp {
             if (victory) {
                 return true;
             }
+            victory = true;
         }
 
         victory = true;
