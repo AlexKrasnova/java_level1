@@ -21,7 +21,7 @@ public class MainApp {
         System.out.println();
 
         size = 5;
-        winningNumber = 3;
+        winningNumber = 4;
         playNoughtsAndCrosses(size, winningNumber);
     }
 
