@@ -4,8 +4,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class MainApp {
-
-    private static final int SIZE = 3;
     private static final char EMPTY_SYMBOL = '*';
     private static final char PLAYER_SYMBOL = 'X';
     private static final char BOT_SYMBOL = 'O';
@@ -16,28 +14,38 @@ public class MainApp {
     static Random random = new Random();
 
     public static void main(String[] args) {
-        playNoughtsAndCrosses();
+        int size = 3;
+        int winningNumber = 3;
+        playNoughtsAndCrosses(size, winningNumber);
+
+        System.out.println();
+
+        size = 5;
+        winningNumber = 3;
+        playNoughtsAndCrosses(size, winningNumber);
     }
 
-    public static void playNoughtsAndCrosses() {
-        prepareMap();
+    public static void playNoughtsAndCrosses(int size, int winningNumber) {
+        prepareMap(size);
         printMap();
         while (true) {
             makePlayerMove();
-            printMap();
-            if(isGameWon(PLAYER_SYMBOL)){
+            if (isGameWon(PLAYER_SYMBOL, winningNumber)) {
                 System.out.println("Победил игрок");
+                printMap();
                 break;
             }
             if (isMapFull()) {
                 System.out.println("Ничья");
+                printMap();
                 break;
             }
 
             makeBotMove();
             printMap();
-            if(isGameWon(BOT_SYMBOL)){
+            if (isGameWon(BOT_SYMBOL, winningNumber)) {
                 System.out.println("Победил бот");
+                break;
             }
             if (isMapFull()) {
                 System.out.println("Ничья");
@@ -46,8 +54,8 @@ public class MainApp {
         }
     }
 
-    public static void prepareMap() {
-        map = new char[SIZE][SIZE];
+    public static void prepareMap(int size) {
+        map = new char[size][size];
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
                 map[y][x] = EMPTY_SYMBOL;
@@ -109,55 +117,87 @@ public class MainApp {
         return true;
     }
 
-/*    public static boolean isGameWon(char symbol) {
+    public static boolean isGameWon(char symbol, int winningNumber) {
         int numberOfSymbolsInLine = 0;
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[0].length; x++) {
                 if (map[y][x] == symbol) {
                     numberOfSymbolsInLine += 1;
+                } else {
+                    numberOfSymbolsInLine = 0;
+                }
+                if (numberOfSymbolsInLine >= winningNumber) {
+                    return true;
                 }
             }
-            if (numberOfSymbolsInLine == map.length) {
-                return true;
-            }
+            numberOfSymbolsInLine = 0;
         }
 
-        numberOfSymbolsInLine = 0;
+
         for (int x = 0; x < map[0].length; x++) {
             for (int y = 0; y < map.length; y++) {
                 if (map[y][x] == symbol) {
                     numberOfSymbolsInLine += 1;
+                } else {
+                    numberOfSymbolsInLine = 0;
+                }
+                if (numberOfSymbolsInLine >= winningNumber) {
+                    return true;
                 }
             }
-            if (numberOfSymbolsInLine == map.length) {
-                return true;
-            }
+
+            numberOfSymbolsInLine = 0;
         }
+
+        for (int k = winningNumber - map.length; k <= map.length - winningNumber; k++) {
+            int x, y;
+            for (int i = 0; i < map.length - Math.abs(k); i++) {
+                if (k >= 0) {
+                    x = i + k;
+                    y = i;
+                } else {
+                    x = i;
+                    y = i - k;
+                }
+                if (map[y][x] == symbol) {
+                    numberOfSymbolsInLine += 1;
+                } else {
+                    numberOfSymbolsInLine = 0;
+                }
+                if (numberOfSymbolsInLine >= winningNumber) {
+                    return true;
+                }
+            }
+            numberOfSymbolsInLine = 0;
+        }
+
 
         numberOfSymbolsInLine = 0;
-        for (int i = 0; i < map.length; i++) {
-            if (map[i][i] == symbol) {
-                numberOfSymbolsInLine += 1;
+        for(int k = winningNumber- map.length; k<= map.length-winningNumber;k++) {
+            int x,y;
+            for (int i = 0; i < map.length-Math.abs(k); i++) {
+                if (k>=0) {
+                    x = map.length - 1 - i;
+                    y = i+k;
+                }else {
+                    x = map.length - 1 -i+k;
+                    y = i;
+                }
+                if (map[y][x] == symbol) {
+                    numberOfSymbolsInLine += 1;
+                } else {
+                    numberOfSymbolsInLine = 0;
+                }
+                if (numberOfSymbolsInLine >= winningNumber) {
+                    return true;
+                }
             }
-        }
-        if (numberOfSymbolsInLine == map.length) {
-            return true;
-        }
-
-
-        numberOfSymbolsInLine = 0;
-        for (int i = 0; i<map.length; i++){
-            if (map[i][map.length-1 -i] == symbol) {
-                numberOfSymbolsInLine += 1;
-            }
-        }
-        if (numberOfSymbolsInLine == map.length) {
-            return true;
+            numberOfSymbolsInLine = 0;
         }
         return false;
-    }*/
+    }
 
-    public static boolean isGameWon(char symbol) {
+/*    public static boolean isGameWon(char symbol) {
         boolean victory = true;
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[0].length; x++) {
@@ -195,7 +235,7 @@ public class MainApp {
             return true;
         }
         return false;
-    }
+    }*/
 
 
 /*    public static void printMap() {
