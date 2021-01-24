@@ -173,14 +173,14 @@ public class MainApp {
 
 
         numberOfSymbolsInLine = 0;
-        for(int k = winningNumber- map.length; k<= map.length-winningNumber;k++) {
-            int x,y;
-            for (int i = 0; i < map.length-Math.abs(k); i++) {
-                if (k>=0) {
+        for (int k = winningNumber - map.length; k <= map.length - winningNumber; k++) {
+            int x, y;
+            for (int i = 0; i < map.length - Math.abs(k); i++) {
+                if (k >= 0) {
                     x = map.length - 1 - i;
-                    y = i+k;
-                }else {
-                    x = map.length - 1 -i+k;
+                    y = i + k;
+                } else {
+                    x = map.length - 1 - i + k;
                     y = i;
                 }
                 if (map[y][x] == symbol) {
@@ -196,73 +196,4 @@ public class MainApp {
         }
         return false;
     }
-
-/*    public static boolean isGameWon(char symbol) {
-        boolean victory = true;
-        for (int y = 0; y < map.length; y++) {
-            for (int x = 0; x < map[0].length; x++) {
-                victory = victory && (map[y][x] == symbol);
-            }
-            if (victory) {
-                return true;
-            }
-            victory = true;
-        }
-
-        for (int x = 0; x < map[0].length; x++) {
-            for (int y = 0; y < map.length; y++) {
-                victory = victory && (map[y][x] == symbol);
-            }
-            if (victory) {
-                return true;
-            }
-            victory = true;
-        }
-
-        victory = true;
-        for (int i = 0; i < map.length; i++) {
-            victory = victory && (map[i][i] == symbol);
-        }
-        if(victory) {
-            return true;
-        }
-
-        victory = true;
-        for (int i = 0; i<map.length; i++){
-            victory = victory && (map[i][map.length-1 -i]==symbol);
-        }
-        if (victory) {
-            return true;
-        }
-        return false;
-    }*/
-
-
-/*    public static void printMap() {
-        System.out.print("  ");
-        for (int i = 1; i <= SIZE; i++) {
-            System.out.print(i + " ");
-        }
-        System.out.println();
-        for (int y = 0; y < map.length; y++) {
-            System.out.print((y + 1) + " ");
-            for (int x = 0; x < map[y].length; x++) {
-                System.out.print(map[y][x] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    public static void prepareMap() {
-        map = new char[SIZE + 1][SIZE];
-
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                map[i][j] = EMPTY_SYMBOL;
-            }
-        }
-    }*/
-
-
 }
