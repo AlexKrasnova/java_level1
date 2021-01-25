@@ -31,8 +31,8 @@ public class MainApp {
         while (true) {
             makePlayerMove();
             if (isGameWon(PLAYER_SYMBOL, winningNumber)) {
-                System.out.println("Победил игрок");
                 printMap();
+                System.out.println("Победил игрок");
                 break;
             }
             if (isMapFull()) {
@@ -41,7 +41,7 @@ public class MainApp {
                 break;
             }
 
-            makeBotMove();
+            makeBotMove(winningNumber);
             printMap();
             if (isGameWon(BOT_SYMBOL, winningNumber)) {
                 System.out.println("Победил бот");
@@ -88,13 +88,172 @@ public class MainApp {
         map[y][x] = PLAYER_SYMBOL;
     }
 
-    public static void makeBotMove() {
+    public static void makeBotMove(int winningNumber) {
         int x, y;
-        do {
-            x = random.nextInt(map[0].length);
-            y = random.nextInt(map.length);
-        } while (!isCellCorrectAndEmpty(x, y));
+        int[] coordinates = findBlockingMove(winningNumber);
+        x = coordinates[0];
+        y = coordinates[1];
+        if (x < 0 || y < 0) {
+            do {
+                x = random.nextInt(map[0].length);
+                y = random.nextInt(map.length);
+            } while (!isCellCorrectAndEmpty(x, y));
+        }
         map[y][x] = BOT_SYMBOL;
+
+
+    }
+
+    public static int[] findBlockingMove(int winningNumber) {
+        int[] coordinates = {-1, -1};
+        int numberOfSymbolsInLine = 0;
+        int numberOfEmptySymbols = 0;
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[0].length; x++) {
+                if (map[y][x] == EMPTY_SYMBOL) {
+                    if (numberOfSymbolsInLine == 0) {
+                        coordinates[0] = x;
+                        coordinates[1] = y;
+                    } else if (numberOfSymbolsInLine > 0) {
+                        if (numberOfEmptySymbols == 0) {
+                            coordinates[0] = x;
+                            coordinates[1] = y;
+                            numberOfEmptySymbols += 1;
+                        } else if (numberOfEmptySymbols>0) {
+                            numberOfSymbolsInLine = 0;
+                            numberOfEmptySymbols = 0;
+                        }
+                    }
+                } else if (map[y][x] == BOT_SYMBOL) {
+                    numberOfSymbolsInLine = 0;
+                } else if (map[y][x] == PLAYER_SYMBOL) {
+                    numberOfSymbolsInLine += 1;
+                }
+                if (numberOfSymbolsInLine >= winningNumber - 1 && coordinates[0] >= 0 && coordinates[1] >= 0) {
+                    return coordinates;
+                }
+            }
+            numberOfSymbolsInLine = 0;
+            numberOfEmptySymbols = 0;
+        }
+
+        coordinates[0] = -1;
+        coordinates[1] = -1;
+
+        for (int x = 0; x < map[0].length; x++) {
+            for (int y = 0; y < map.length; y++) {
+                if (map[y][x] == EMPTY_SYMBOL) {
+                    if (numberOfSymbolsInLine == 0) {
+                        coordinates[0] = x;
+                        coordinates[1] = y;
+                    } else if (numberOfSymbolsInLine > 0) {
+                        if (numberOfEmptySymbols == 0) {
+                            coordinates[0] = x;
+                            coordinates[1] = y;
+                            numberOfEmptySymbols += 1;
+                        } else if (numberOfEmptySymbols>0) {
+                            numberOfSymbolsInLine = 0;
+                            numberOfEmptySymbols = 0;
+                        }
+                    }
+                } else if (map[y][x] == BOT_SYMBOL) {
+                    numberOfSymbolsInLine = 0;
+                } else if (map[y][x] == PLAYER_SYMBOL) {
+                    numberOfSymbolsInLine += 1;
+                }
+                if (numberOfSymbolsInLine >= winningNumber - 1 && coordinates[0] >= 0 && coordinates[1] >= 0) {
+                    return coordinates;
+                }
+            }
+            numberOfSymbolsInLine = 0;
+            numberOfEmptySymbols = 0;
+        }
+
+        coordinates[0] = -1;
+        coordinates[1] = -1;
+
+        for (int k = winningNumber - map.length; k <= map.length - winningNumber; k++) {
+            int x, y;
+            for (int i = 0; i < map.length - Math.abs(k); i++) {
+                if (k >= 0) {
+                    x = i + k;
+                    y = i;
+                } else {
+                    x = i;
+                    y = i - k;
+                }
+                if (map[y][x] == EMPTY_SYMBOL) {
+                    if (numberOfSymbolsInLine == 0) {
+                        coordinates[0] = x;
+                        coordinates[1] = y;
+                    } else if (numberOfSymbolsInLine > 0) {
+                        if (numberOfEmptySymbols == 0) {
+                            coordinates[0] = x;
+                            coordinates[1] = y;
+                            numberOfEmptySymbols += 1;
+                        } else if (numberOfEmptySymbols>0) {
+                            numberOfSymbolsInLine = 0;
+                            numberOfEmptySymbols = 0;
+                        }
+                    }
+                } else if (map[y][x] == BOT_SYMBOL) {
+                    numberOfSymbolsInLine = 0;
+                } else if (map[y][x] == PLAYER_SYMBOL) {
+                    numberOfSymbolsInLine += 1;
+                }
+                if (numberOfSymbolsInLine >= winningNumber - 1 && coordinates[0] >= 0 && coordinates[1] >= 0) {
+                    return coordinates;
+                }
+            }
+            numberOfSymbolsInLine = 0;
+            numberOfEmptySymbols = 0;
+        }
+        //todo: Исправить ошибку при блокировании победы игрока на линиях, параллельных диагонали [i][i]
+
+        coordinates[0] = -1;
+        coordinates[1] = -1;
+
+        for (int k = winningNumber - map.length; k <= map.length - winningNumber; k++) {
+            int x, y;
+            for (int i = 0; i < map.length - Math.abs(k); i++) {
+                if (k >= 0) {
+                    x = map.length - 1 - i;
+                    y = i + k;
+                } else {
+                    x = map.length - 1 - i + k;
+                    y = i;
+                }
+                if (map[y][x] == EMPTY_SYMBOL) {
+                    if (numberOfSymbolsInLine == 0) {
+                        coordinates[0] = x;
+                        coordinates[1] = y;
+                    } else if (numberOfSymbolsInLine > 0) {
+                        if (numberOfEmptySymbols == 0) {
+                            coordinates[0] = x;
+                            coordinates[1] = y;
+                            numberOfEmptySymbols += 1;
+                        } else if (numberOfEmptySymbols>0) {
+                            numberOfSymbolsInLine = 0;
+                            numberOfEmptySymbols = 0;
+                        }
+                    }
+                } else if (map[y][x] == BOT_SYMBOL) {
+                    numberOfSymbolsInLine = 0;
+                } else if (map[y][x] == PLAYER_SYMBOL) {
+                    numberOfSymbolsInLine += 1;
+                }
+                if (numberOfSymbolsInLine >= winningNumber - 1 && coordinates[0] >= 0 && coordinates[1] >= 0) {
+                    return coordinates;
+                }
+            }
+            numberOfSymbolsInLine = 0;
+            numberOfEmptySymbols = 0;
+        }
+        //todo: Исправить ошибку при блокировании победы игрока на диагонали [i][map.length - i] и линиях, параллельных ей
+
+        coordinates[0] = -1;
+        coordinates[1] = -1;
+        return coordinates;
     }
 
     public static boolean isCellCorrectAndEmpty(int x, int y) {
