@@ -2,28 +2,31 @@ package ru.geekbrains.alexkrasnova.javalevelone.lesson7;
 
 public class Cat {
     private String name;
-    private boolean hungry;
+    private boolean satiety;
     private int appetite;
     private Plate plate;
 
     public Cat(String name, int appetite) {
         this.name = name;
         this.appetite = appetite;
-        hungry = true;
+        satiety = false;
     }
 
-    public boolean isHungry() {
-        return hungry;
+    public boolean isFull() {
+        return satiety;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void eat(Plate plate) {
-        if (hungry) {
+        if (!satiety) {
             System.out.printf("Кот %s пытается поесть из тарелки %d. ", name, plate.getNumber());
             if (plate.getFoodAmount() >= appetite) {
-                hungry = false;
+                satiety = true;
                 System.out.println("Кот поел и теперь сыт.");
                 plate.takeFood(appetite);
-                hungry = false;
             } else {
                 System.out.println("В тарелке недостаточно еды.");
             }
